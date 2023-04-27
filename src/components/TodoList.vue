@@ -221,13 +221,9 @@ export default defineComponent({
         favorite: todo.id === id ? checkbox.checked : todo.favorite,
       }));
 
-      const favorites = this.todosList.reduce((acc: number[], todo) => {
-        if (todo.favorite) {
-          return acc.includes(todo.id) ? acc : [...acc, todo.id];
-        }
-        return acc;
-      }, []);
-
+      const prevFavorites = localStorage.getItem('favoritesTodos');
+      let favorites: number[] = prevFavorites ? JSON.parse(prevFavorites).concat() : [];
+      checkbox.checked ? favorites.push(id) : (favorites = favorites.filter(f => f !== id));
       localStorage.setItem('favoritesTodos', JSON.stringify(favorites));
     },
   },
